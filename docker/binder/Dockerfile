@@ -14,8 +14,11 @@ COPY . ${USER_HOME_DIR}
 
 USER ${USER}
 WORKDIR ${USER_HOME_DIR}
-
 RUN pip3 install .
-EXPOSE 8080
 
-# CMD [ "julia " ]
+EXPOSE 8888
+
+# == This loads pluto immediately when it can, instead of on first request (pfff jupyter server proxy)
+# ENTRYPOINT ["sh", "./try-booting-pluto-with-request.sh"]
+# CMD jupyter notebook --ip 0.0.0.0 --NotebookApp.token=123
+CMD jupyter notebook --ip 0.0.0.0
