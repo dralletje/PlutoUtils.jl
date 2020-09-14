@@ -11,11 +11,12 @@ RUN useradd -m -d ${USER_HOME_DIR} ${USER} \
     && chown -R ${USER} ${USER_HOME_DIR}
 
 USER ${USER}
-RUN julia -e 'using Pkg; Pkg.update(); Pkg.add(["Pluto", "PlutoUI", "Plots"]); Pkg.precompile();'
+RUN julia -e 'using Pkg; Pkg.update(); Pkg.add(["Pluto", "PlutoUI"]); Pkg.precompile();'
 
 EXPOSE 1234
 VOLUME ${NOTEBOOK_DIR}
 WORKDIR ${NOTEBOOK_DIR}
 
-COPY docker_main.jl ${USER_HOME_DIR}
-CMD [ "julia", "/home/pluto/docker_main.jl" ]
+COPY --chown=pluto:pluto start_pluto.jl ${USER_HOME_DIR}
+
+CMD julia ${USER_HOME_DIR}/start_pluto.jl

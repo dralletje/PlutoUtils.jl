@@ -1,5 +1,5 @@
 using Pkg
-Pkg.add(["Pluto", "PlutoUI", "PackageCompiler"]) #"Plots", "Images", "ImageIO", "ImageMagick", 
+Pkg.add(["PackageCompiler"]) #"Plots", "Images", "ImageIO", "ImageMagick", 
 
 using PackageCompiler
-create_sysimage([:Pluto, :PlutoUI]; precompile_execution_file="precompile.jl", replace_default=true)
+create_sysimage([:Pluto, :PlutoUI]; precompile_execution_file="precompile.jl", cpu_target="generic", replace_default=true)

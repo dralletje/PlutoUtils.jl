@@ -1,26 +1,21 @@
-FROM shashankpv/plutojl:precompiled
-
-ARG NB_USER=jovyan
-ARG NB_UID=1000
-ENV USER ${NB_USER}
-ENV NB_UID ${NB_UID}
-ENV HOME /home/${NB_USER}
+FROM pluto-precompiled
 
 USER root
 RUN apt-get update \
     && apt-get -y install --no-install-recommends python3-pip \
-    && pip3 install -vU setuptools \
-    && pip3 install jupyter \
-    && pip3 install jupyter-server-proxy
+    && pip3 install --no-cache-dir -vU setuptools
 
-RUN usermod -l ${NB_USER} pluto
-COPY . ${HOME}
-RUN chown -R ${NB_UID} ${HOME}
+RUN pip3 install --no-cache-dir notebook==5.* \
+    && pip3 install --no-cache-dir jupyter-server-proxy
 
-USER ${NB_USER}
-WORKDIR ${HOME}
+
+COPY . ${USER_HOME_DIR}
+# RUN chown -R ${USER} ${USER_HOME_DIR}
+
+USER ${USER}
+WORKDIR ${USER_HOME_DIR}
 
 RUN pip3 install .
 EXPOSE 8080
 
-CMD [ "ls" ]
+# CMD [ "julia " ]
